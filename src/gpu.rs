@@ -108,6 +108,7 @@ impl GpuContext {
             power_preference: wgpu::PowerPreference::HighPerformance,
             force_fallback_adapter: false,
             compatible_surface: None,
+            ..Default::default()
         }))
         .map_err(|e| io::Error::other(format!("No Metal GPU adapter: {e}")))?;
         if adapter.get_info().device_type == wgpu::DeviceType::Cpu {
@@ -186,7 +187,7 @@ impl GpuContext {
         let groups = count.div_ceil(THREADS);
         let bytes = size_of_val(records) as u64;
         let limits = self.device.limits();
-        if bytes > u64::from(limits.max_storage_buffer_binding_size)
+        if bytes > limits.max_storage_buffer_binding_size
             || bytes > limits.max_buffer_size
             || groups > limits.max_compute_workgroups_per_dimension
         {
@@ -286,7 +287,9 @@ impl GpuContext {
             .recv_timeout(Duration::from_secs(5))
             .map_err(|e| io::Error::other(format!("GPU readback callback failed: {e}")))?
             .map_err(|e| io::Error::other(format!("GPU readback failed: {e}")))?;
-        let view = slice.get_mapped_range();
+        let view = slice
+            .get_mapped_range()
+            .map_err(|e| io::Error::other(format!("Could not access GPU readback: {e}")))?;
         let sorted: &[NumericRecord] = bytemuck::cast_slice(&view);
         // Validate ordering and that no record was lost, duplicated or changed
         // before returning the permutation to the caller.

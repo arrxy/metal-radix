@@ -10,7 +10,7 @@ without moving their payloads.
 ## Requirements
 
 - macOS with a hardware Metal-capable GPU.
-- A Rust toolchain compatible with the Rust 2024 edition and wgpu 29.
+- A Rust toolchain compatible with the Rust 2024 edition and wgpu 30.
 
 The current implementation uses Metal exclusively. It has no CPU fallback, and
 `GpuSorter::new()` returns an error when a supported GPU cannot be initialized.

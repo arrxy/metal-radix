@@ -1,0 +1,24 @@
+[package]
+name = "metal-radix"
+version = "0.1.0"
+edition = "2024"
+description = "GPU-accelerated radix sorting of u32 key pairs on macOS"
+license = "MIT"
+readme = "README.md"
+keywords = ["gpu", "sorting", "radix", "metal", "macos"]
+categories = ["algorithms"]
+include = ["src/**", "tests/**", "examples/**", "README.md", "LICENSE"]
+
+repository = "https://github.com/arrxy/metal-radix"
+
+[lib]
+name = "metal_radix"
+path = "src/lib.rs"
+
+[dependencies]
+bytemuck = "1.25.0"
+
+[dependencies.wgpu]
+version = "29.0.3"
+default-features = false
+features = ["std", "metal", "wgsl"]

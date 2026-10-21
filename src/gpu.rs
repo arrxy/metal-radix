@@ -109,7 +109,7 @@ impl GpuContext {
             force_fallback_adapter: false,
             compatible_surface: None,
         }))
-            .map_err(|e| io::Error::other(format!("No Metal GPU adapter: {e}")))?;
+        .map_err(|e| io::Error::other(format!("No Metal GPU adapter: {e}")))?;
         if adapter.get_info().device_type == wgpu::DeviceType::Cpu {
             return Err(io::Error::other("GPU sorting requires a hardware GPU"));
         }
@@ -117,7 +117,7 @@ impl GpuContext {
             label: Some("Key-pair radix sorter"),
             ..Default::default()
         }))
-            .map_err(|e| io::Error::other(format!("Could not initialize GPU: {e}")))?;
+        .map_err(|e| io::Error::other(format!("Could not initialize GPU: {e}")))?;
         let errors = device.push_error_scope(wgpu::ErrorFilter::Validation);
         let entries: Vec<_> = (0..6)
             .map(|binding| wgpu::BindGroupLayoutEntry {
